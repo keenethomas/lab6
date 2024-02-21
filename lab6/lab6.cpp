@@ -20,6 +20,7 @@ int main() {
         cout << "Couldn't Load Image" << endl;
         exit(1);
     }
+
     Image backgroundImage;
     backgroundImage = backgroundTex.copyToImage();
     Image foregroundImage;
@@ -27,23 +28,26 @@ int main() {
     Vector2u sz = backgroundImage.getSize();
     for (int y = 0; y < sz.y; y++) {
         for (int x = 0; x < sz.x; x++) {
-            // These two loops will run the code inside for each pixel in the background image
-                // You can access the current pixel at x,y like so:
-                Color example = foregroundImage.getPixel(x, y);
-            // Color objects store the individual channel values like example.r example.g and example.b
+                Color backgroundC = backgroundImage.getPixel(x, y);
+                Color foregroundC = foregroundImage.getPixel(x, y);
+                Color mixedC(
+                    backgroundC.r / 2 + foregroundC.r / 2,
+                    backgroundC.g / 2 + foregroundC.g / 2,
+                    backgroundC.b / 2 + foregroundC.b / 2);
+                foregroundImage.setPixel(x, y, mixedC);
         }
     }
-    // By default, just show the foreground image
+
+
     RenderWindow window(VideoMode(1024, 768), "Here's the output");
     Sprite sprite1;
     Texture tex1;
-    tex1.loadFromImage(backgroundImage);
+    tex1.loadFromImage(foregroundImage);
     sprite1.setTexture(tex1);
     window.clear();
     window.draw(sprite1);
     window.display();
     while (true);
-
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
