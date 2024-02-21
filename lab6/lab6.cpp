@@ -35,6 +35,11 @@ int main() {
                     backgroundC.g / 2 + foregroundC.g / 2,
                     backgroundC.b / 2 + foregroundC.b / 2);
                 foregroundImage.setPixel(x, y, mixedC);
+
+                Color c = foregroundImage.getPixel(x, y);
+                int luminance = (c.r * 0.255) + (c.g * 0.290) + (c.b * 0.255);
+                Color luminanceColor(luminance, luminance, luminance);
+                foregroundImage.setPixel(x, y, luminanceColor);
         }
     }
 
