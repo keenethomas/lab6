@@ -11,11 +11,13 @@ int main() {
     string background = "images1/backgrounds/winter.png";
     string foreground = "images1/characters/yoda.png";
     Texture backgroundTex;
+
     if (!backgroundTex.loadFromFile(background)) {
         cout << "Couldn't Load Image" << endl;
         exit(1);
     }
     Texture foregroundTex;
+
     if (!foregroundTex.loadFromFile(foreground)) {
         cout << "Couldn't Load Image" << endl;
         exit(1);
@@ -26,23 +28,22 @@ int main() {
     Image foregroundImage;
     foregroundImage = foregroundTex.copyToImage();
     Vector2u sz = backgroundImage.getSize();
+
+    Color greenScreen;
     for (int y = 0; y < sz.y; y++) {
         for (int x = 0; x < sz.x; x++) {
-                Color backgroundC = backgroundImage.getPixel(x, y);
-                Color foregroundC = foregroundImage.getPixel(x, y);
-                Color mixedC(
-                    backgroundC.r / 2 + foregroundC.r / 2,
-                    backgroundC.g / 2 + foregroundC.g / 2,
-                    backgroundC.b / 2 + foregroundC.b / 2);
-                foregroundImage.setPixel(x, y, mixedC);
 
-                Color c = foregroundImage.getPixel(x, y);
-                int luminance = (c.r * 0.255) + (c.g * 0.290) + (c.b * 0.255);
-                Color luminanceColor(luminance, luminance, luminance);
-                foregroundImage.setPixel(x, y, luminanceColor);
+            if (y == 0 && x == 0) {
+                greenScreen = foregroundImage.getPixel(x, y);
+            }
+        Color currPixelBackground = backgroundImage.getPixel(x, y);
+        Color currPixelForeground = foregroundImage.getPixel(x, y);
+
+        if (currPixelForeground == greenScreen) {
+            foregroundImage.setPixel(x, y, currPixelBackground);
         }
     }
-
+}
 
     RenderWindow window(VideoMode(1024, 768), "Here's the output");
     Sprite sprite1;
